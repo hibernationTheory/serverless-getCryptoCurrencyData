@@ -2,7 +2,7 @@ var Promise = require('bluebird');
 const MongoClient = require('mongodb').MongoClient;
 
 const getCryptoCurrencies = require('./controllers/getCryptoCurrencies');
-const getCryptoCurrency = require('./controllers/getCryptoCurrencyData').getCryptoCurrencyDataForMultiple;
+const getCryptoCurrencyDataForMultiple = require('./controllers/getCryptoCurrencyData').getCryptoCurrencyDataForMultiple;
 const insertOrUpdateCryptoCurrencyData = require('./controllers/insertOrUpdateCryptoCurrencyData');
 const miscUtils = require('./utils/misc');
 const { 
@@ -27,7 +27,7 @@ export const updateDatabase = (event, context, cb) => {
 			return getCryptoCurrencies()
 		})
 		.then((currencies) => {
-			return getCurrencyDataForMultiple(currencies);
+			return getCryptoCurrencyDataForMultiple(currencies, 300, 1);
 		})
 		.then((allCurrenciesData) => {
 			return Promise.map(allCurrenciesData, (data) => {
@@ -43,7 +43,7 @@ export const updateDatabase = (event, context, cb) => {
 		})
 		.then((result) => {
 			client.close();
-			return true;
+			return result;
 		})
 		.catch((err) => {
 			return err;
