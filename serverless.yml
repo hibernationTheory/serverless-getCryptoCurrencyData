@@ -29,6 +29,9 @@ functions:
       - http:
           method: get
           path: updateDatabase
+      - schedule:
+          rate: rate(5 minutes)
+          enabled: true
   getTrackedCryptoCurrencies:
     handler: getTrackedCryptoCurrencies.getTrackedCryptoCurrencies
     events:
@@ -41,3 +44,6 @@ functions:
       - http:
           method: get
           path: sendUpdateNotification
+      - schedule:
+          rate: rate(7 minutes)
+          enabled: true
