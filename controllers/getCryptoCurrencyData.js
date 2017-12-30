@@ -1,5 +1,6 @@
 const axios = require('axios');
 const moment = require('moment-timezone');
+var Promise = require('bluebird');
 
 const miscUtils = require('../utils/misc');
 const {
@@ -156,7 +157,7 @@ function getCryptoCurrencyData(coinmarketcapId) {
 
 function getCryptoCurrencyDataForMultiple(currencies, delayAmount, concurrency) {
 	const promises = currencies.map((currency) => {
-		return getCryptoCurrency(currency);
+		return getCryptoCurrencyData(currency);
 	});
 
 	return Promise.map(
