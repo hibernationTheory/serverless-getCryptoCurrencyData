@@ -1,0 +1,43 @@
+service:
+  name: aws-nodejs-ecma-script
+
+# Add the serverless-webpack plugin
+plugins:
+  - serverless-webpack
+  - serverless-offline
+
+provider:
+  name: aws
+  runtime: nodejs6.10
+  environment: 
+    MONGODB_URL: ${file(./serverless.env.yml):MONGODB_URL}
+    SEND_EMAIL_ENDPOINT: ${file(./serverless.env.yml):SEND_EMAIL_ENDPOINT}
+
+functions:
+  cryptocurrencies:
+    handler: cryptocurrencies.cryptocurrencies
+    events:
+      - http:
+          method: get
+          path: cryptocurrencies
+      - http:
+          method: get
+          path: cryptocurrencies/{id}
+  updateDatabase:
+    handler: updateDatabase.updateDatabase
+    events:
+      - http:
+          method: get
+          path: updateDatabase
+  getTrackedCryptoCurrencies:
+    handler: getTrackedCryptoCurrencies.getTrackedCryptoCurrencies
+    events:
+      - http:
+          method: get
+          path: getTrackedCryptoCurrencies
+  sendCryptoCurrencyUpdate:
+    handler: sendCryptoCurrencyUpdate.sendUpdateNotification
+    events:
+      - http:
+          method: get
+          path: sendUpdateNotification
