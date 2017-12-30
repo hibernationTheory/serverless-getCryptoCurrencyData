@@ -15,6 +15,7 @@ function parseCurrencyData(data) {
 		error,
 		flags,
 		highLow,
+		sma,
 		milestonePreviousPrice,
 		milestonePreviousVolume,
 		price,
@@ -58,7 +59,12 @@ function parseCurrencyData(data) {
 		message += `${parseInt(highLowPercentDiff, 10)}% Near Day 30 Low of ${highLow.day30.low} |\n`
 	}
 
-	let content = `${symbol} (${price}) @ ${time}:\n ${message} | 24h%: ${getPercentDifference(price24h, price)} | % from 30d High: ${getPercentDifference(highLow.day30.high, price)}`;
+	let content = `${symbol} (${price}) @ ${time}:\n ${message}` 
+	content += `24h%: ${getPercentDifference(price24h, price)} |\n% from 30d High: ${getPercentDifference(highLow.day30.high, price)} |\n`;
+	if (sma) {
+		content += `sma7: ${sma.day7}, sma30: ${sma.day30}`
+	}
+	
 	
 	return content;
 }
@@ -94,7 +100,7 @@ export const sendUpdateNotification = (event, context, cb) => {
 	const result = getTrackedCryptoCurrencyData(MONGODB_URL)
 		.then((collectionData) => {
 			const messages = collectionData
-				// .filter((data) => data.flags.priceFlag || data.flags.volumeFlag )
+				.filter((data) => data.flags.priceFlag || data.flags.volumeFlag )
 				.map((data) => {
 					return parseCurrencyData(data);
 				});
