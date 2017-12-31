@@ -44,16 +44,16 @@ function getCryptoCompareHistoDay(symbol) {
 
 			const highLowData = {
 				day1: {
-					high: findMax(day1, 'high'),
-					low: findMin(day1, 'low'),
+					high: parseFloat(findMax(day1, 'high').toFixed(3)),
+					low: parseFloat(findMin(day1, 'low').toFixed(3)),
 				},
 				day7: {
-					high: findMax(day7, 'high'),
-					low: findMin(day7, 'low'),
+					high: parseFloat(findMax(day7, 'high').toFixed(3)),
+					low: parseFloat(findMin(day7, 'low').toFixed(3)),
 				},
 				day30: {
-					high: findMax(day30, 'high'),
-					low: findMin(day30, 'low')
+					high: parseFloat(findMax(day30, 'high').toFixed(3)),
+					low: parseFloat(findMin(day30, 'low').toFixed(3))
 				}
 			};
 

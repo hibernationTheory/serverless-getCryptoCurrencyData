@@ -28,7 +28,9 @@ const currencies = [
 	'siacoin',
 	'okcash',
 	'raiden-network-token',
-	'power-ledger'
+	'power-ledger',
+	'ark',
+	'gnosis-gno'
 ];
 
 module.exports = () => {
