@@ -58,8 +58,8 @@ function getCryptoCompareHistoDay(symbol) {
 			};
 
 			const smaData = {
-				day7: sma(day7),
-				day30: sma(day30),
+				day7: parseFloat(sma(day7).toFixed(3)),
+				day30: parseFloat(sma(day30).toFixed(3)),
 			}
 
 			return {
