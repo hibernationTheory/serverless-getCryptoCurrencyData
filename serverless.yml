@@ -38,6 +38,7 @@ functions:
       - http:
           method: get
           path: getTrackedCryptoCurrencies
+          cors: true
   sendCryptoCurrencyUpdate:
     handler: sendCryptoCurrencyUpdate.sendUpdateNotification
     events:
