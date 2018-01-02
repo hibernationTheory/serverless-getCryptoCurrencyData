@@ -46,5 +46,5 @@ functions:
           method: get
           path: sendUpdateNotification
       - schedule:
-          rate: rate(7 minutes)
+          rate: rate(10 minutes)
           enabled: true

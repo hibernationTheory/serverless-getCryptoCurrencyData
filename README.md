@@ -5,6 +5,7 @@
 - api design: http://jsonapi.org/recommendations/
 - multiple endpoints in a single serverless: http://www.goingserverless.com/blog/routing-api-gateway-traffic-through-one-lambda-function
 - handling environment variables: https://medium.com/@purplecones/serverless-environment-variables-4ec818f67388 (actually this didn't work but the official docs did)
+- learn more about cross origin stuff: https://serverless.com/framework/docs/providers/aws/events/apigateway/
 
 ## TODO
 

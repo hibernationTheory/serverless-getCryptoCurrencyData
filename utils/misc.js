@@ -40,6 +40,9 @@ function getPercentDifference(prev, curr) {
 function getResponse(data, event) {
 	return {
 		statusCode: 200,
+		headers: {
+			'Access-Control-Allow-Origin' : '*', // Required for CORS support to work
+		},
 		body: JSON.stringify({
 			data: data,
 			input: event,
