@@ -5,32 +5,34 @@ const currencies = [
 	'ripple',
 	'litecoin',
 	'cardano',
-	'iota',
+	// 'iota', // debunked by mit
 	'dash',
-	'nem',
+	'nem', // nem looks pro in the website, not great on the code end of things, price looks awe
 	'monero',
-	'eos',
+	'eos', // dan lerimer
 	'bitcoin-gold',
-	'neo',
+	'neo', // chinese ethereum
 	'qtum',
 	'stellar',
 	'ethereum-classic',
-	'lisk',
+	// 'lisk', // written in js?
 	'verge',
-	'tron',
+	// 'tron', // not in english, ridiculous name
 	'icon',
-	'nxt',
-	'digibyte',
+	// 'nxt', // defunct at this point
+	// 'digibyte',
 	'zcash',
-	'stratis',
+	'stratis', // team doesn't look great. but hold on to your position.
 	'icon',
-	'omisego',
+	'omisego', // vitalik backing
 	'siacoin',
-	'okcash',
+	// 'okcash', // looks terrible, stale
 	'raiden-network-token',
 	'power-ledger',
-	'ark',
-	'gnosis-gno'
+	// 'ark', // don't quite understand it
+	// 'gnosis-gno', // prediction market?
+	'0x',
+	// 'chainlink' // ico token. sold it out.
 ];
 
 module.exports = () => {

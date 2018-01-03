@@ -109,6 +109,7 @@ function getCoinMarketCapData(id) {
 			const time = moment(lastUpdatedApi).tz('Etc/GMT+5').format('hh:mm a');
 
 			return {
+				name: id,
 				change1h: parseFloat(percentChange1h.toFixed(2)),
 				change24h: parseFloat(percentChange24h.toFixed(2)),
 				change7d: parseFloat(percentChange7d.toFixed(2)),
