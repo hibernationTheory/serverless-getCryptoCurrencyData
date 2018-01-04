@@ -17,13 +17,13 @@ const currencies = [
 	'ethereum-classic',
 	// 'lisk', // written in js?
 	'verge',
-	// 'tron', // not in english, ridiculous name
-	'icon',
+	'tron', // not in english, ridiculous name. high vol tho.
+	// 'icon',
 	// 'nxt', // defunct at this point
 	// 'digibyte',
 	'zcash',
-	'stratis', // team doesn't look great. but hold on to your position.
-	'icon',
+	// 'stratis', // team doesn't look great.
+	// 'icon',
 	'omisego', // vitalik backing
 	'siacoin',
 	// 'okcash', // looks terrible, stale
@@ -32,7 +32,7 @@ const currencies = [
 	// 'ark', // don't quite understand it
 	// 'gnosis-gno', // prediction market?
 	'0x',
-	// 'chainlink' // ico token. sold it out.
+	// 'chainlink' // ico token. sold it.
 ];
 
 module.exports = () => {
