@@ -14,10 +14,52 @@ const {
 */
 function sma(data) {
 	const sum = data.reduce((acc, curr) => {
+		if (!curr) {
+			return 0;
+		}
+
 		return acc + (curr.high + curr.low)/2
 	}, 0);
 
 	return sum/data.length;
+}
+
+/**
+* getCryptoCompareSocialData gets the social data for the given coin.
+*/
+function getCryptoCompareSocialData(id) {
+	const base = `https://www.cryptocompare.com/api/data/socialstats/`;
+	const url = `${base}?id=${id}`;
+
+	return axios.get(url)
+		.then(function (response) {
+			if (response.status !== 200) {
+				throw new Error(response.statusText);
+			}
+
+			if (response.data.Response === 'Error') {
+				throw new Error(response.data.Message);
+			}
+
+			return response.data;
+		})
+		.then((_data) => {
+			const data = _data.Data;
+
+			const socialData = {
+				socialData: {
+					twitter: {
+						followers: data.Twitter.followers,
+					},
+					reddit: {
+						subscribers: data.Reddit.subscribers,
+						activeUsers: data.Reddit.active_users,
+					}
+				}
+			};
+
+			return socialData;
+		});
 }
 
 /**
@@ -31,6 +73,10 @@ function getCryptoCompareHistoDay(symbol) {
 		.then(function (response) {
 			if (response.status !== 200) {
 				throw new Error(response.statusText);
+			}
+
+			if (response.data.Response === 'Error') {
+				throw new Error(response.data.Message);
 			}
 
 			return response.data;
@@ -63,8 +109,76 @@ function getCryptoCompareHistoDay(symbol) {
 			}
 
 			return {
-				sma: smaData,
-				highLow: highLowData,
+				histoDay: {
+					data: data,
+					sma: smaData,
+					highLow: highLowData
+				},
+			};
+		})
+		.catch((error) => {
+			console.log('error getting cryptocompare data for ', symbol);
+			console.log(error.message);
+
+			return {
+				error: error.message,
+			};
+		});
+}
+
+/**
+* getCryptoCompareHistoMinute gets the high and low price for last 24 hrs
+*/
+function getCryptoCompareHistoMinute(symbol) {
+	const base = `https://min-api.cryptocompare.com/data/histominute`;
+	const url = `${base}?fsym=${symbol}&tsym=USD`;
+
+	return axios.get(url)
+		.then(function (response) {
+			if (response.status !== 200) {
+				throw new Error(response.statusText);
+			}
+
+			if (response.data.Response === 'Error') {
+				throw new Error(response.data.Message);
+			}
+
+			return response.data;
+		})
+		.then((_data) => {
+			let data = _data.Data;
+
+			const hour1 = data.slice(data.length-60, data.length);
+			const hour12 = data.slice(data.length-60*12, data.length);
+			const hour24 = data.slice(data.length-60*24, data.length);
+
+			const highLowData = {
+				hour1: {
+					high: parseFloat(findMax(hour1, 'high').toFixed(3)),
+					low: parseFloat(findMin(hour1, 'low').toFixed(3)),
+				},
+				hour12: {
+					high: parseFloat(findMax(hour12, 'high').toFixed(3)),
+					low: parseFloat(findMin(hour12, 'low').toFixed(3)),
+				},
+				hour24: {
+					high: parseFloat(findMax(hour24, 'high').toFixed(3)),
+					low: parseFloat(findMin(hour24, 'low').toFixed(3))
+				}
+			};
+
+			const smaData = {
+				hour1: parseFloat(sma(hour1).toFixed(3)),
+				hour12: parseFloat(sma(hour12).toFixed(3)),
+				hour24: parseFloat(sma(hour24).toFixed(3)),
+			}
+
+			return {
+				histoMinData: {
+					data: data,
+					sma: smaData,
+					highLow: highLowData,
+				}
 			};
 		})
 		.catch((error) => {
@@ -137,26 +251,56 @@ function getCoinMarketCapData(id) {
 /**
 * getCryptoCurrencyData gets desired data from cryptocompare and coinmarketcap
 */
-function getCryptoCurrencyData(coinmarketcapId) {
+function getCryptoCurrencyData(currencyData, delayAmount = 1000) {
 	let data = {};
 
-	return getCoinMarketCapData(coinmarketcapId)
+	return getCoinMarketCapData(currencyData.name)
 		.then((_data) => {
-			if (data.error) {
-				return data;
+			if (_data.error) {
+				return _data;
 			}
 
-			data = _data;
+			data = Object.assign({}, data, _data);
 			return getCryptoCompareHistoDay(data.symbol);
 		})
+		// add a bit of a delay.
 		.then((_data) => {
-			let result = Object.assign({}, data, _data);
+			return delay(delayAmount)
+				.then(() => {
+					return _data;
+				});
+		})
+		.then((_data) => {
+			if (_data.error) {
+				return _data;
+			}
+
+			data = Object.assign({}, data, _data);
+			return getCryptoCompareHistoMinute(data.symbol);
+		})
+		// add a bit of a delay.
+		.then((_data) => {
+			return delay(delayAmount)
+				.then(() => {
+					return _data;
+				});
+		})
+		.then((_data) => {
+			if (_data.error) {
+				return _data;
+			}
+
+			data = Object.assign({}, data, _data);
+			return getCryptoCompareSocialData(currencyData.cryptoCompareData.Id);
+		})
+		.then((_data) => {
+			const result = Object.assign({}, data, _data);
 
 			return result;
-		})
+		});
 }
 
-function getCryptoCurrencyDataForMultiple(currencies, delayAmount, concurrency) {
+function getCryptoCurrencyDataForMultiple(currencies, delayAmount, concurrency=1) {
 	const promises = currencies.map((currency) => {
 		return getCryptoCurrencyData(currency);
 	});

@@ -14,8 +14,7 @@ function parseCurrencyData(data) {
 	const { 
 		error,
 		flags,
-		highLow,
-		sma,
+		histoDay,
 		milestonePreviousPrice,
 		milestonePreviousVolume,
 		price,
@@ -43,28 +42,29 @@ function parseCurrencyData(data) {
 		message += `Volume % ${priceVolumeDiff} (fr:${milestonePreviousVolume} to:${volume24h}) |\n`
 	}
 	if (flags.day7HighFlag) {
-		highLowPercentDiff = parseInt(getPercentDifference(highLow.day7.high, price), 10);
-		message += `${highLowPercentDiff}% Near Day 7 High of ${highLow.day7.high} |\n`
+		highLowPercentDiff = parseInt(getPercentDifference(histoDay.highLow.day7.high, price), 10);
+		message += `${highLowPercentDiff}% Near Day 7 High of ${histoDay.highLow.day7.high} |\n`
 	}
 	if (flags.day7LowFlag) {
-		highLowPercentDiff = parseInt(getPercentDifference(highLow.day7.low, price), 10);
-		message += `${highLowPercentDiff}% Near Day 7 Low of ${highLow.day7.low} |\n`
+		highLowPercentDiff = parseInt(getPercentDifference(histoDay.highLow.day7.low, price), 10);
+		message += `${highLowPercentDiff}% Near Day 7 Low of ${histoDay.highLow.day7.low} |\n`
 	}
 	if (flags.day30HighFlag) {
-		highLowPercentDiff = parseInt(getPercentDifference(highLow.day30.high, price), 10);
-		message += `${highLowPercentDiff}% Near Day 30 High of ${highLow.day30.high} |\n`
+		highLowPercentDiff = parseInt(getPercentDifference(histoDay.highLow.day30.high, price), 10);
+		message += `${highLowPercentDiff}% Near Day 30 High of ${histoDay.highLow.day30.high} |\n`
 	}
 	if (flags.day30LowFlag) {
-		highLowPercentDiff = parseInt(getPercentDifference(highLow.day30.low, price), 10);
-		message += `${highLowPercentDiff}% Near Day 30 Low of ${highLow.day30.low} |\n`
+		highLowPercentDiff = parseInt(getPercentDifference(histoDay.highLow.day30.low, price), 10);
+		message += `${highLowPercentDiff}% Near Day 30 Low of ${histoDay.highLow.day30.low} |\n`
 	}
 
 	let content = `${symbol} Price: ${price} @ ${time}:\n\n${message}` 
-	content += `24h Price %: ${parseInt(getPercentDifference(price24h, price), 10)} |\n% from 30d High: ${parseInt(getPercentDifference(highLow.day30.high, price), 10)} |\n\n`;
-	if (sma) {
-		content += `SMA7: ${sma.day7.toFixed(3)}, SMA30: ${sma.day30.toFixed(3)}`
-	}
-	
+	content += `24h Price %: ${parseInt(getPercentDifference(price24h, price), 10)} |\n% from 30d High: ${parseInt(getPercentDifference(histoDay.highLow.day30.high, price), 10)} |\n\n`;
+
+	let prefix = '#########################\n';
+	let suffix = '#########################\n';
+	content = prefix + content;
+	content = content + suffix;
 	
 	return content;
 }

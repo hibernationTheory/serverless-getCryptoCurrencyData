@@ -1,3 +1,6 @@
+const fs = require('fs');
+
+
 function delay(amount) {
 	return new Promise((resolve, reject) => {
 		setTimeout(() => {
@@ -8,6 +11,10 @@ function delay(amount) {
 
 function findMax(arr, property) {
 	let max = arr.reduce((acc, curr) => {
+		if (!curr) {
+			return 0;
+		}
+
 		if (curr[property] > acc) {
 			return curr[property]
 		}
@@ -20,12 +27,16 @@ function findMax(arr, property) {
 
 function findMin(arr, property) {
 	let min = arr.reduce((acc, curr) => {
+		if (!curr) {
+			return 0;
+		}
+
 		if (curr[property] < acc) {
 			return curr[property]
 		}
 
 		return acc;
-	}, arr[0][property] || 0);
+	}, 0);
 
 	return min;
 }
@@ -76,6 +87,17 @@ function percentDifferenceWithinThreshold(prev, curr, threshold) {
 	return false;
 }
 
+function writeFile(path, data) {
+	return new Promise((resolve, reject) => {
+		fs.writeFile(path, data, (err) => {
+			if (err) {
+				throw err;
+			}
+			resolve(true);
+		})
+	})
+}
+
 module.exports = {
 	delay,
 	findMax,
@@ -83,5 +105,6 @@ module.exports = {
 	getResponse,
 	getPercentDifference,
 	percentDifferenceBeyondThreshold,
-	percentDifferenceWithinThreshold
+	percentDifferenceWithinThreshold,
+	writeFile
 };

@@ -24,10 +24,10 @@ export const updateDatabase = (event, context, cb) => {
 		})
 		.then((_collection) => {
 			collection = _collection;
-			return getCryptoCurrencies()
+			return getCryptoCurrencies();
 		})
 		.then((currencies) => {
-			return getCryptoCurrencyDataForMultiple(currencies, 300, 1);
+			return getCryptoCurrencyDataForMultiple(currencies, 1000, 1);
 		})
 		.then((allCurrenciesData) => {
 			return Promise.map(allCurrenciesData, (data) => {

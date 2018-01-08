@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Serverless webpack example using ecma script",
   "scripts": {
+    "compile-list": "node data/augmentCryptoCurrencyNameList.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
@@ -20,6 +21,7 @@
   "dependencies": {
     "axios": "^0.17.1",
     "bluebird": "^3.5.1",
+    "dotenv": "^4.0.0",
     "moment": "^2.20.1",
     "moment-timezone": "^0.5.14",
     "mongodb": "^2.2.33"
