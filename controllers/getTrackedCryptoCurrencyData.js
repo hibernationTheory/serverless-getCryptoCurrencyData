@@ -29,6 +29,7 @@ function getTrackedCryptoCurrencyData(mongoUrl) {
 		// filter those that are not in the current list
 		.then((cryptoCurrencies) => {
 			const result = [];
+
 			const cryptoCurrencyNames = cryptoCurrencies.map((currency) => {
 				return currency.name;
 			});

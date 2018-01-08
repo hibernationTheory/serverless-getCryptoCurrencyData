@@ -14,10 +14,6 @@ const {
 */
 function sma(data) {
 	const sum = data.reduce((acc, curr) => {
-		if (!curr) {
-			return 0;
-		}
-
 		return acc + (curr.high + curr.low)/2
 	}, 0);
 
@@ -251,7 +247,7 @@ function getCoinMarketCapData(id) {
 /**
 * getCryptoCurrencyData gets desired data from cryptocompare and coinmarketcap
 */
-function getCryptoCurrencyData(currencyData, delayAmount = 1000) {
+function getCryptoCurrencyData(currencyData, delayAmount = 100) {
 	let data = {};
 
 	return getCoinMarketCapData(currencyData.name)
@@ -261,38 +257,41 @@ function getCryptoCurrencyData(currencyData, delayAmount = 1000) {
 			}
 
 			data = Object.assign({}, data, _data);
-			return getCryptoCompareHistoDay(data.symbol);
-		})
-		// add a bit of a delay.
-		.then((_data) => {
-			return delay(delayAmount)
-				.then(() => {
-					return _data;
-				});
-		})
-		.then((_data) => {
-			if (_data.error) {
-				return _data;
-			}
 
-			data = Object.assign({}, data, _data);
-			return getCryptoCompareHistoMinute(data.symbol);
+			return data;
+			// return getCryptoCompareHistoDay(data.symbol);
 		})
-		// add a bit of a delay.
-		.then((_data) => {
-			return delay(delayAmount)
-				.then(() => {
-					return _data;
-				});
-		})
-		.then((_data) => {
-			if (_data.error) {
-				return _data;
-			}
+		// TODO : hitting the API too much. Will find a different way of tackling these.
+		// // add a bit of a delay.
+		// .then((_data) => {
+		// 	return delay(delayAmount)
+		// 		.then(() => {
+		// 			return _data;
+		// 		});
+		// })
+		// .then((_data) => {
+		// 	if (_data.error) {
+		// 		return _data;
+		// 	}
 
-			data = Object.assign({}, data, _data);
-			return getCryptoCompareSocialData(currencyData.cryptoCompareData.Id);
-		})
+		// 	data = Object.assign({}, data, _data);
+		// 	return getCryptoCompareHistoMinute(data.symbol);
+		// })
+		// // add a bit of a delay.
+		// .then((_data) => {
+		// 	return delay(delayAmount)
+		// 		.then(() => {
+		// 			return _data;
+		// 		});
+		// })
+		// .then((_data) => {
+		// 	if (_data.error) {
+		// 		return _data;
+		// 	}
+
+		// 	data = Object.assign({}, data, _data);
+		// 	return getCryptoCompareSocialData(currencyData.cryptoCompareData.Id);
+		// })
 		.then((_data) => {
 			const result = Object.assign({}, data, _data);
 
@@ -300,7 +299,7 @@ function getCryptoCurrencyData(currencyData, delayAmount = 1000) {
 		});
 }
 
-function getCryptoCurrencyDataForMultiple(currencies, delayAmount, concurrency=1) {
+function getCryptoCurrencyDataForMultiple(currencies, delayAmount=250, concurrency=1) {
 	const promises = currencies.map((currency) => {
 		return getCryptoCurrencyData(currency);
 	});

@@ -41,25 +41,30 @@ function parseCurrencyData(data) {
 		priceVolumeDiff = parseInt(getPercentDifference(milestonePreviousVolume, volume24h), 10);
 		message += `Volume % ${priceVolumeDiff} (fr:${milestonePreviousVolume} to:${volume24h}) |\n`
 	}
-	if (flags.day7HighFlag) {
-		highLowPercentDiff = parseInt(getPercentDifference(histoDay.highLow.day7.high, price), 10);
-		message += `${highLowPercentDiff}% Near Day 7 High of ${histoDay.highLow.day7.high} |\n`
-	}
-	if (flags.day7LowFlag) {
-		highLowPercentDiff = parseInt(getPercentDifference(histoDay.highLow.day7.low, price), 10);
-		message += `${highLowPercentDiff}% Near Day 7 Low of ${histoDay.highLow.day7.low} |\n`
-	}
-	if (flags.day30HighFlag) {
-		highLowPercentDiff = parseInt(getPercentDifference(histoDay.highLow.day30.high, price), 10);
-		message += `${highLowPercentDiff}% Near Day 30 High of ${histoDay.highLow.day30.high} |\n`
-	}
-	if (flags.day30LowFlag) {
-		highLowPercentDiff = parseInt(getPercentDifference(histoDay.highLow.day30.low, price), 10);
-		message += `${highLowPercentDiff}% Near Day 30 Low of ${histoDay.highLow.day30.low} |\n`
-	}
+	// TODO : disabling until highLow can be reliably fetched
+	// if (flags.day7HighFlag) {
+	// 	highLowPercentDiff = parseInt(getPercentDifference(histoDay.highLow.day7.high, price), 10);
+	// 	message += `${highLowPercentDiff}% Near Day 7 High of ${histoDay.highLow.day7.high} |\n`
+	// }
+	// if (flags.day7LowFlag) {
+	// 	highLowPercentDiff = parseInt(getPercentDifference(histoDay.highLow.day7.low, price), 10);
+	// 	message += `${highLowPercentDiff}% Near Day 7 Low of ${histoDay.highLow.day7.low} |\n`
+	// }
+	// if (flags.day30HighFlag) {
+	// 	highLowPercentDiff = parseInt(getPercentDifference(histoDay.highLow.day30.high, price), 10);
+	// 	message += `${highLowPercentDiff}% Near Day 30 High of ${histoDay.highLow.day30.high} |\n`
+	// }
+	// if (flags.day30LowFlag) {
+	// 	highLowPercentDiff = parseInt(getPercentDifference(histoDay.highLow.day30.low, price), 10);
+	// 	message += `${highLowPercentDiff}% Near Day 30 Low of ${histoDay.highLow.day30.low} |\n`
+	// }
 
-	let content = `${symbol} Price: ${price} @ ${time}:\n\n${message}` 
-	content += `24h Price %: ${parseInt(getPercentDifference(price24h, price), 10)} |\n% from 30d High: ${parseInt(getPercentDifference(histoDay.highLow.day30.high, price), 10)} |\n\n`;
+	let content = `${symbol} Price: ${price} @ ${time}:\n`;
+	content += '---------------------------\n';
+	content += `${message}`
+	content += `24h Price %: ${parseInt(getPercentDifference(price24h, price), 10)} |\n`;
+	// TODO : disabling until highLow can be reliably fetched
+	// content += `% from 30d High: ${parseInt(getPercentDifference(histoDay.highLow.day30.high, price), 10)} |\n`;
 
 	let prefix = '#########################\n';
 	let suffix = '#########################\n';

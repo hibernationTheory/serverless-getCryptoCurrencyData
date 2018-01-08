@@ -64,6 +64,10 @@ function getResponse(data, event) {
 function percentDifferenceBeyondThreshold(prev, curr, threshold) {
 	// checks to see if the percentile difference in between two values
 	// are beyond the given threshold
+	if (prev === undefined || curr === undefined) {
+		return false;
+	}
+
 	const diff = Math.abs(curr-prev);
 	const change = diff * 100 / prev;
 
@@ -77,6 +81,10 @@ function percentDifferenceBeyondThreshold(prev, curr, threshold) {
 function percentDifferenceWithinThreshold(prev, curr, threshold) {
 	// checks to see if the percentile difference in between two values
 	// are within the given threshold
+	if (prev === undefined || curr === undefined) {
+		return false;
+	}
+
 	const diff = Math.abs(curr-prev);
 	const change = diff * 100 / prev;
 

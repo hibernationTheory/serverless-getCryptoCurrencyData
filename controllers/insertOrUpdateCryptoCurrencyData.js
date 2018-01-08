@@ -60,12 +60,12 @@ function insertCryptoCurrencyData(collection, data) {
 		milestoneVolume: data.volume24h,
 		milestonePreviousVolume: data.volume24h,
 		milestoneVolumeDate: Date.now(),
-		milestoneTwitterFollowers: data.socialData.twitter.followers,
-		milestonePreviousTwitterFollowers: data.socialData.twitter.followers,
-		milestoneRedditSubscribers: data.socialData.reddit.subscribers,
-		milestoneRedditPreviousSubscribers: data.socialData.reddit.subscribers,
-		milestoneRedditActiveUsers: data.socialData.reddit.activeUsers,
-		milestoneRedditPreviousActiveUsers: data.socialData.reddit.activeUsers,
+		milestoneTwitterFollowers: data.socialData && data.socialData.twitter.followers,
+		milestonePreviousTwitterFollowers: data.socialData && data.socialData.twitter.followers,
+		milestoneRedditSubscribers: data.socialData && data.socialData.reddit.subscribers,
+		milestoneRedditPreviousSubscribers: data.socialData && data.socialData.reddit.subscribers,
+		milestoneRedditActiveUsers: data.socialData && data.socialData.reddit.activeUsers,
+		milestoneRedditPreviousActiveUsers: data.socialData && data.socialData.reddit.activeUsers,
 
 		flags: {
 			priceFlag: false,
@@ -143,8 +143,8 @@ function insertOrUpdateCryptoCurrencyData(collection, data) {
 			// reddit subscriber difference
 			if (
 				percentDifferenceBeyondThreshold(
-					updateData.milestoneVolume,
-					updateData.volume24h,
+					updateData.milestoneRedditSubscribers,
+					updateData.socialData.reddit.subscribers,
 					5
 				)
 			) {
@@ -156,8 +156,8 @@ function insertOrUpdateCryptoCurrencyData(collection, data) {
 			// reddit active user difference
 			if (
 				percentDifferenceBeyondThreshold(
-					updateData.milestoneVolume,
-					updateData.volume24h,
+					updateData.milestoneRedditActiveUsers,
+					updateData.data.socialData.reddit.activeUsers,
 					10
 				)
 			) {

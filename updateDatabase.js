@@ -27,7 +27,7 @@ export const updateDatabase = (event, context, cb) => {
 			return getCryptoCurrencies();
 		})
 		.then((currencies) => {
-			return getCryptoCurrencyDataForMultiple(currencies, 1000, 1);
+			return getCryptoCurrencyDataForMultiple(currencies);
 		})
 		.then((allCurrenciesData) => {
 			return Promise.map(allCurrenciesData, (data) => {
